@@ -27,15 +27,29 @@ public class SParse {
 		
 		readWordCSV();
 		Modality.readBabyNames();
-		//String testStr = "A man had to go to the park with his dog";//works
-		//String testStr = "john will pay him at 1230";
-		String testStr = "Pay him tomorrow";
-		//String testStr = "run"; //works
-		//String testStr = "hello";
-		//String testStr = "green";
+		String[] testArray = {"A man had to go to the park with his dog", "john will pay him at 1230", "Pay him tomorrow", "run", 
+					"hello", "Lively little John drove in a car to the park carelessly but he fell and hurt his hand"};
 		
-		//String testStr = "Lively little John drove in a car to the park carelessly but he fell and hurt his hand";//works
 		
+		for(String str : testArray) {
+			readPhrase(str);
+		}
+		
+	}
+	/*The sentences will have to be translated into events that the "Chatbot" can interpret. a sentence with a compound subject, action or object 
+	*might be resolved into 2 or more events, which could be ordered relative to one another temporally. 
+	*The voice (inquisitive vs imperative or declarative should be determined in a class like the modality class, along with the person)
+	*thus the plural of a noun should be recognized as a certain "person" which can then be expressed using the appropriate pronoun.
+	*
+	*/
+	
+	
+	public static void init() {
+		readWordCSV();
+		Modality.readBabyNames();
+	}
+	
+	public static void readPhrase(String testStr) {
 		Node endVal = getPhraseTreeFromString(testStr.toLowerCase(), 0, true);
 		if(!(endVal instanceof Sentence))endVal = new Sentence(new ArrayList<Node>(Arrays.asList(endVal)));
 		Mode testMode = null;
@@ -49,22 +63,6 @@ public class SParse {
 		else System.out.println("Person could not be determined for the pattern: " + ((Sentence)endVal).getChildSymbolString());
 		if((testVoice = Modality.getVoice((Sentence)endVal)) != null)System.out.println("\n\nvoice : " + testVoice.toString());
 		else System.out.println("Voice could not be determined for the pattern: " + ((Sentence)endVal).getChildSymbolString());
-		
-		
-		int test = 0;
-		test ++;
-	}
-	/*The sentences will have to be translated into events that the "Chatbot" can interpret. a sentence with a compound subject, action or object 
-	*might be resolved into 2 or more events, which could be ordered relative to one another temporally. 
-	*The voice (inquisitive vs imperative or declarative should be determined in a class like the modality class, along with the person)
-	*thus the plural of a noun should be recognized as a certain "person" which can then be expressed using the appropriate pronoun.
-	*
-	*/
-	
-	
-	public static void init() {
-		readWordCSV();
-		Modality.readBabyNames();
 	}
 	
 	public static void readWordCSV() {
