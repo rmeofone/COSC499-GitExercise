@@ -9,7 +9,8 @@ public class Phrase extends Node{
 		
 	}
 	public Phrase(ArrayList<Node> c) {
-		children = c;		
+		children = c;	
+			
 	}
 	
 	public String toString(){
@@ -23,5 +24,21 @@ public class Phrase extends Node{
 	
 	public ArrayList<Node> getChildren(){
 		return this.children;
+	}
+	
+	public String getPhraseFromSymbol() {		
+		String p = "";
+		switch(this.symbol) {
+			case 'z': p = "Noun Phrase";break;
+			case 'y': p = "Verb Phrase";break;
+			case 'v': p = "Adverb Phrase";break;
+			case 'w': p = "Adjective Phrase";break;
+			case 't': p = "Interjection Phrase";break;
+			case 'x': p = "Preposition Phrase";break;
+			case 'u': p = "Auxiliary Phrase";break;
+			case 's': p = "Sentence";break;
+			default : p = "Unknown Phrase type: " + this.symbol;
+		}
+		return p;
 	}
 }

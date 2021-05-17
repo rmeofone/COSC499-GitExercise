@@ -29,23 +29,27 @@ public class SParse {
 		Modality.readBabyNames();
 		//String testStr = "A man had to go to the park with his dog";//works
 		//String testStr = "john will pay him at 1230";
-		//String testStr = "Pay him tomorrow";
+		String testStr = "Pay him tomorrow";
 		//String testStr = "run"; //works
 		//String testStr = "hello";
 		//String testStr = "green";
 		
-		String testStr = "Lively little John drove in a car to the park carelessly but he fell and hurt his hand";//works
+		//String testStr = "Lively little John drove in a car to the park carelessly but he fell and hurt his hand";//works
 		
 		Node endVal = getPhraseTreeFromString(testStr.toLowerCase(), 0, true);
 		if(!(endVal instanceof Sentence))endVal = new Sentence(new ArrayList<Node>(Arrays.asList(endVal)));
 		Mode testMode = null;
 		Person testPerson = null;
 		Voice testVoice = null;
+		System.out.println("\n");
 		//change it so tht instead of returning the modality, etc it just mutates the sentence, so that the function can execute for compound sentences recursively
 		if((testMode = Modality.getModality((Sentence)endVal)) != null)System.out.println("\n\nmodality : " + testMode.toString());
-		if((testPerson = Modality.getPerson((Sentence)endVal)) != null)System.out.println("\n\nperson : " + testPerson.toString());
+		else System.out.println("Modality could not be determined for the pattern: " + ((Sentence)endVal).getChildSymbolString());
+		if((testPerson = Modality.getPerson((Sentence)endVal)) != null)System.out.println("\n\nperson : " + testPerson.toString());		
+		else System.out.println("Person could not be determined for the pattern: " + ((Sentence)endVal).getChildSymbolString());
 		if((testVoice = Modality.getVoice((Sentence)endVal)) != null)System.out.println("\n\nvoice : " + testVoice.toString());
-		else { System.out.println("\n" + ((Sentence)endVal).getChildSymbolString());}
+		else System.out.println("Voice could not be determined for the pattern: " + ((Sentence)endVal).getChildSymbolString());
+		
 		
 		int test = 0;
 		test ++;
@@ -119,11 +123,12 @@ public class SParse {
 			nList.add(n);
 		}
 		//need to change any ambiguous words like dog into nouns in the case that they are used after a possessive pronoun
+		//this is an inherent difficulty in using anything other than deep learning to process english, which can be subjectively interpreted.
 		
 		nList = adjustWordType(nList);
 		
 		
-		//hopefully now it wont make phrases out of single adjectives and adverbs.
+		//These patterns are the base phrases that make up all larger phrases in the language (in theory anyhow)
 		// Patterns reversed char-wise, listed in order as follows:
 		//interjection,auxiliary,adverb,adjective, preposition,noun,verb,sentence
 		String[] pList = {	"o+",
@@ -162,6 +167,7 @@ public class SParse {
 								case 6:  phr = new VerbPhrase(tempList);break;	
 								case 7:  phr = new Sentence(tempList);break;
 					}
+					System.out.println("\nCreating phrase: " + phr.getPhraseFromSymbol());
 					nList.add(nList.size()-m.start(), phr);
 					pStr = new StringBuilder(getRCharStringFromList(nList)).reverse().toString();
 					if(verboss)System.out.print(Arrays.toString(nList.toArray())+ " :: " + pStr + ", i = " + i + ", count = " + count);
