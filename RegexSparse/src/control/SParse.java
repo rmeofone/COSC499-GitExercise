@@ -20,7 +20,7 @@ public class SParse {
 	public static LinkedList<Word> wList;
 	public static Word[] wListA;
 
-	
+	//adding comment to demonstrate git commit/push
 	public static void main(String[] args) {	
 		//getTextFromDB();		
 		//writeWordCSV();
